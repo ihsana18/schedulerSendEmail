@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.service.implementation;
 
+import com.myproject.MyProject1.dto.DropdownDTO;
 import com.myproject.MyProject1.dto.InsertTemplateMessage;
 import com.myproject.MyProject1.dto.TemplateMessageGrid;
 import com.myproject.MyProject1.entity.TemplateMessage;
@@ -67,5 +68,11 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
     @Override
     public void delete(String templateName) {
         templateMessageRepository.deleteById(templateMessageRepository.findByName(templateName).getTemplateMessageId());
+    }
+
+    @Override
+    public List<DropdownDTO> getTemplates() {
+        List<DropdownDTO> dtoList = templateMessageRepository.dropdownTemplate();
+        return dtoList;
     }
 }

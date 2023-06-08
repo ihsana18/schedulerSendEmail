@@ -15,12 +15,14 @@ public class MvcSecurityConfiguration {
     @Order(1)
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-			.antMatchers("/resources/**", "/user/login","/user/update","/user/list-user").permitAll()
-			.antMatchers("/user/**","template/**","/scheduler/**","/recipient/**","/account/accessDenied").hasAnyAuthority("Administrator","Supervisor")
-			.antMatchers("/template/list-template","/template/insert","/template/update",
-					"/scheduler/list-scheduler","/scheduler/insert","/scheduler/update",
-					"/recipient/list-recipient","/recipient/insert","/recipient/update"
-					).hasAuthority("Data Entry")
+			.antMatchers("/resources/**", "/account/index","/account/index","/recipient/index","/template/index",
+					"/scheduler/index").permitAll()
+			.antMatchers("/account/registerForm","/account/register","/account/delete"
+					,"/template/upsertForm","/template/delete","/template/upsert"
+					,"/scheduler/upsertForm","/scheduler/upsert","/scheduler/delete"
+					,"/recipient/upsertForm","/recipient/upsert","/recipient/delete"
+					).hasAnyAuthority("Administrator","Supervisor")
+			.antMatchers().hasAuthority("Data Entry")
 			.anyRequest().permitAll()
 			.and().formLogin()
 			.loginPage("/account/loginForm")

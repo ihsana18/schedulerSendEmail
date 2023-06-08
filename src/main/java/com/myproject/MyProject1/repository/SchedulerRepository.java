@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.repository;
 
+import com.myproject.MyProject1.dto.InsertScheduler;
 import com.myproject.MyProject1.dto.SchedulerGrid;
 import com.myproject.MyProject1.entity.Scheduler;
 import org.springframework.data.domain.Page;
@@ -12,10 +13,16 @@ public interface SchedulerRepository extends JpaRepository<Scheduler, String> {
     String getLastId();
 
     @Query("select new com.myproject.MyProject1.dto.SchedulerGrid" +
-            "(sc.period,sc.intervalWeek,sc.intervalMonthly,tmp.templateName,sc.sendTime) " +
+            "(sc.schedulerName,sc.period,sc.intervalWeek,sc.intervalMonthly,tmp.templateName,sc.sendTime) " +
             "from Scheduler sc " +
             "JOIN sc.templateMessage tmp " +
             "WHERE tmp.templateName LIKE %:search% " +
             "OR sc.period LIKE %:search% ")
     Page<SchedulerGrid> getAll(Pageable pageable, String search);
+
+    @Query("select sch from Scheduler sch WHERE sch.schedulerName = :currentSchedulerName")
+    Scheduler findByName(String currentSchedulerName);
+
+    @Query("select new com.myproject.MyProject1.dto.InsertScheduler(sch.schedulerName,sch.schedulerName,sch.period,sch.intervalWeek,sch.intervalMonthly,tmp.templateName,sch.sendTime) from Scheduler sch JOIN sch.templateMessage tmp WHERE sch.schedulerName = :currentSchedulerName")
+    InsertScheduler getByName(String currentSchedulerName);
 }

@@ -6,35 +6,29 @@
 	<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
 	<main>
 		<div class="grid-container category-index">
-		    <form method="get" class="filter" th:attr="action=@{/scheduler/index}">
+		    <form method="get" class="filter" th:attr="action=@{/report/index}">
 		        <input type="text" name="search" placeholder="Search..." th:attr="value=${search}">
 		        <button class="blue-button" type="submit">Search</button>
 		    </form>
-		    <a class="blue-button create-button" th:href="@{/scheduler/upsertForm}">Insert Scheduler</a>
 			<table>
 		        <thead>
 		            <tr>
-						<th>Scheduler Name</th>
-		                <th>Period</th>
-		                <th>Interval Week</th>
-						<th>Interval Month</th>
-						<th>Template Name</th>
-						<th>Send Time</th>
-						<th>Action</th>
+						<th>Sender</th>
+		                <th>Email</th>
+		                <th>Body Message</th>
+						<th>Date Sent</th>
+						<th>Time Sent</th>
+						<th>TemplateName</th>
 		            </tr>
 		        </thead>
 		        <tbody>
-			        <tr th:each="template : ${grid}" th:object="${template}">
-						<td th:text="*{schedulerName}"></td>
-						<td th:text="*{period}"></td>
-						<td th:text="*{intervalWeek}"></td>
-						<td th:text="*{intervalMonth}"></td>
+			        <tr th:each="report : ${grid}" th:object="${report}">
+						<td th:text="*{sender}"></td>
+						<td th:text="*{email}"></td>
+						<td th:text="*{bodyMessage}"></td>
+						<td th:text="*{dateSent}"></td>
+						<td th:text="*{timeSent}"></td>
 						<td th:text="*{templateName}"></td>
-						<td th:text="*{sendTime}"></td>
-						<td>
-							<a th:href="@{/scheduler/upsertForm(currentSchedulerName=*{schedulerName})}" class="blue-button update-button">Edit</a>
-							<a th:href="@{/scheduler/delete(schedulerName=*{schedulerName})}" class="blue-button delete-button">Delete</a>
-						</td>
 					</tr>
 		        </tbody>
 				<tfoot>
@@ -44,7 +38,7 @@
 		                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
 		                        <div th:if="${totalPages != 0}">
 									<a th:each="loop:${#numbers.sequence(1,totalPages)}" 
-										th:href="@{/template/index(page=${loop},search=${search})}"
+										th:href="@{/report/index(page=${loop},search=${search})}"
 										th:text="${loop}"></a>
 		                        </div>
 		                    </div>

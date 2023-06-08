@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.repository;
 
+import com.myproject.MyProject1.dto.InsertRecipient;
 import com.myproject.MyProject1.dto.RecipientGrid;
 import com.myproject.MyProject1.entity.Recipient;
 import org.springframework.data.domain.Page;
@@ -19,15 +20,33 @@ public interface RecipientRepository extends JpaRepository<Recipient,String> {
     @Query("SELECT new com.myproject.MyProject1.dto.RecipientGrid(rcp.name,rcp.email,tmp.templateName) " +
             "FROM Recipient rcp " +
             "JOIN rcp.templateMessage tmp " +
-            "WHERE rcp.name LIKE %:name%")
-    List<RecipientGrid> getAll(@Param("name") String name);
+            "WHERE rcp.name LIKE %:search% " +
+                "OR rcp.email LIKE %:search% " +
+                        "OR tmp.templateName LIKE %:search%")
+    List<RecipientGrid> getAll(@Param("search") String search);
 
     @Query("SELECT new com.myproject.MyProject1.dto.RecipientGrid(rcp.name,rcp.email,tmp.templateName) " +
             "FROM Recipient rcp " +
             "JOIN rcp.templateMessage tmp " +
-            "WHERE rcp.name LIKE %:name%")
-    Page<RecipientGrid> getAllData(Pageable pageable,@Param("name") String name);
+            "WHERE rcp.name LIKE %:search% " +
+            "OR rcp.email LIKE %:search% " +
+            "OR tmp.templateName LIKE %:search%")
+    Page<RecipientGrid> getAllData(Pageable pageable,@Param("search") String search);
 
     @Query("SELECT rcp FROM Recipient rcp WHERE rcp.templateMessageId = :templateMessageId")
     List<Recipient> findByTemplateId(String templateMessageId);
+
+    @Query("select new com.myproject.MyProject1.dto.InsertRecipient(rcp.name,rcp.name,rcp.email,tmp.templateName) FROM Recipient rcp " +
+            "JOIN rcp.templateMessage tmp " +
+            "WHERE rcp.name = :currentName")
+    InsertRecipient findByName(String currentName);
+
+    @Query("select rcp FROM Recipient rcp Where rcp.name = :currentName")
+    Recipient getByName(String currentName);
+
+    @Query("select rcp FROM Recipient rcp Where rcp.name = :name")
+    List<Recipient> getListByName(String name);
+
+    @Query("select Count(rcp) FROM Recipient rcp Where rcp.name = :name")
+    int countByName(String name);
 }

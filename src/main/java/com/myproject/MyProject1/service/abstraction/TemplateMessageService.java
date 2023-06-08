@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.service.abstraction;
 
+import com.myproject.MyProject1.dto.DropdownDTO;
 import com.myproject.MyProject1.dto.InsertTemplateMessage;
 import com.myproject.MyProject1.dto.TemplateMessageGrid;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,6 @@ public interface TemplateMessageService {
     InsertTemplateMessage getTemplateByName(String currentTemplateName);
 
     void delete(String templateName);
+
+    List<DropdownDTO> getTemplates();
 }

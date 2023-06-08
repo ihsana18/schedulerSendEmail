@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.repository;
 
+import com.myproject.MyProject1.dto.DropdownDTO;
 import com.myproject.MyProject1.dto.InsertTemplateMessage;
 import com.myproject.MyProject1.dto.TemplateMessageGrid;
 import com.myproject.MyProject1.entity.TemplateMessage;
@@ -35,4 +36,7 @@ public interface TemplateMessageRepository extends JpaRepository<TemplateMessage
 
     @Query("SELECT new com.myproject.MyProject1.dto.InsertTemplateMessage(tmp.templateName,tmp.templateName,tmp.bodyMessage) FROM TemplateMessage tmp WHERE tmp.templateName = :currentTemplateName")
     InsertTemplateMessage getTemplateByName(String currentTemplateName);
+
+    @Query("SELECT new com.myproject.MyProject1.dto.DropdownDTO(tmp.templateName,tmp.templateName) FROM TemplateMessage tmp")
+    List<DropdownDTO> dropdownTemplate();
 }

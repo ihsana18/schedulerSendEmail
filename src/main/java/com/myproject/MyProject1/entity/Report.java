@@ -7,34 +7,35 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "Scheduler")
+@Table(name = "Report")
+@Component
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter @Getter
-@Component
-public class Scheduler {
+public class Report {
     @Id
-    @Column(name = "schedulerId")
-    private String schedulerId;
+    @Column(name = "reportId")
+    private String reportId;
 
-    @Column(name = "schedulerName")
-    private String schedulerName;
+    @Column(name = "sentBy")
+    private String sentBy;
 
-    @Column(name = "period")
-    private String period;
+    @Column(name = "emailRecipient")
+    private String email;
 
-    @Column(name = "intervalWeek")
-    private String intervalWeek;
+    @Column(name = "dateSent")
+    private LocalDate dateSent;
 
-    @Column(name = "intervalMonthly")
-    private String intervalMonthly;
+    @Column(name = "timeSent")
+    private LocalTime timeSent;
 
-    @Column(name = "sendTime")
-    private LocalTime sendTime;
+    @Column(name = "bodyMessage")
+    private String bodyMessage;
 
     @Column(name = "templateMessageId")
     private String templateMessageId;

@@ -8,4 +8,8 @@ public interface SchedulerService {
     Object save(InsertScheduler dto);
 
     Page<SchedulerGrid> getListScheduler(int page, String search);
+
+    InsertScheduler getSchedulerByName(String currentSchedulerName);
+
+    void delete(String schedulerName);
 }

@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Setter @Getter
 public class SchedulerGrid {
+    private String schedulerName;
     private String period;
     private String intervalWeek;
     private String intervalMonth;
