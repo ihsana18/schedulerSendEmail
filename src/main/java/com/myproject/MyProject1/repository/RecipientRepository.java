@@ -49,4 +49,6 @@ public interface RecipientRepository extends JpaRepository<Recipient,String> {
 
     @Query("select Count(rcp) FROM Recipient rcp Where rcp.name = :name")
     int countByName(String name);
+    @Query("select Count(rcp) FROM Recipient rcp Where rcp.email = :email")
+    long countByEmail(String email);
 }

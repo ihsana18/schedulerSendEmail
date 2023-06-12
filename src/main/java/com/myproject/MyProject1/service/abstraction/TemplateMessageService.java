@@ -17,4 +17,6 @@ public interface TemplateMessageService {
     void delete(String templateName);
 
     List<DropdownDTO> getTemplates();
+
+    boolean checkTemplate(String name);
 }

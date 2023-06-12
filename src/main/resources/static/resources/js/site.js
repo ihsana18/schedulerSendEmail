@@ -35,3 +35,5 @@ let mainBody = document.querySelector(".main-body");
 let roleName = mainBody.getAttribute("data-role");
 let formatted = roleName.replace('[', '').replace(']', '').replace('ROLE_', '');
 mainBody.setAttribute("data-role", formatted);
+
+var

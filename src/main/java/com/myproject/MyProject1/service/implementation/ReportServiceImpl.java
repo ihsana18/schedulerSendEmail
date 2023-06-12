@@ -1,6 +1,7 @@
 package com.myproject.MyProject1.service.implementation;
 
 import com.myproject.MyProject1.dto.ReportGrid;
+import com.myproject.MyProject1.entity.Report;
 import com.myproject.MyProject1.repository.ReportRepository;
 import com.myproject.MyProject1.service.abstraction.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -22,4 +26,12 @@ public class ReportServiceImpl implements ReportService {
 
         return reports;
     }
+
+    @Override
+    public List<Report> getALl() {
+        List<Report> reports = reportRepository.findAll();
+        return reports;
+    }
+
+
 }

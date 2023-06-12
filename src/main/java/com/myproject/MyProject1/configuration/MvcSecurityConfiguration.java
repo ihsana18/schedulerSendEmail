@@ -15,12 +15,12 @@ public class MvcSecurityConfiguration {
     @Order(1)
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-			.antMatchers("/resources/**", "/account/index","/account/index","/recipient/index","/template/index",
-					"/scheduler/index").permitAll()
+			.antMatchers("/resources/**", "/account/index","/recipient/index","/template/index",
+					"/scheduler/index","/recipient/upsertForm","/recipient/upsert","/recipient/delete").permitAll()
 			.antMatchers("/account/registerForm","/account/register","/account/delete"
 					,"/template/upsertForm","/template/delete","/template/upsert"
 					,"/scheduler/upsertForm","/scheduler/upsert","/scheduler/delete"
-					,"/recipient/upsertForm","/recipient/upsert","/recipient/delete"
+
 					).hasAnyAuthority("Administrator","Supervisor")
 			.antMatchers().hasAuthority("Data Entry")
 			.anyRequest().permitAll()

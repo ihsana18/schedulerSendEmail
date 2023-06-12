@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.dto;
 
+import com.myproject.MyProject1.validation.anotation.UniqueTemplateName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,14 @@ import javax.validation.constraints.NotNull;
 public class InsertTemplateMessage {
 
     private String currentTemplateName;
+    @NotNull(message = "templateName is required")
+    @NotBlank(message = "templateName cannot empty")
+    @UniqueTemplateName(message = "templateName already exist")
+    private String templateName;
 
     @NotNull(message = "bodyMessage is required")
     @NotBlank(message = "bodyMessage cannot empty")
     private String bodyMessage;
 
-    @NotNull(message = "templateName is required")
-    @NotBlank(message = "templateName cannot empty")
-    private String templateName;
+
 }

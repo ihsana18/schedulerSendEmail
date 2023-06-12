@@ -39,4 +39,7 @@ public interface TemplateMessageRepository extends JpaRepository<TemplateMessage
 
     @Query("SELECT new com.myproject.MyProject1.dto.DropdownDTO(tmp.templateName,tmp.templateName) FROM TemplateMessage tmp")
     List<DropdownDTO> dropdownTemplate();
+
+    @Query("SELECT COUNT(tmp) FROM TemplateMessage tmp WHERE tmp.templateName = :name")
+    Long countByName(String name);
 }

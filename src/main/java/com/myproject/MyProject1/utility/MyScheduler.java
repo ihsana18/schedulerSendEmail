@@ -8,8 +8,7 @@ import com.myproject.MyProject1.repository.RecipientRepository;
 import com.myproject.MyProject1.repository.ReportRepository;
 import com.myproject.MyProject1.repository.SchedulerRepository;
 import com.myproject.MyProject1.repository.TemplateMessageRepository;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,11 +51,6 @@ public class MyScheduler {
 
 
 
-        // Find your Account Sid and Token at twilio.com/console
-        public static final String ACCOUNT_SID = "AC88d93110e70d8c91e6a775a9fb93201c";
-        public static final String AUTH_TOKEN = "8cc1fd1e55bd35cf9be5fa71b03785e7";
-
-
 //    @Scheduled(cron = "10 * 08-17 * * SUN-FRI")
     @Scheduled(fixedDelay = 60000)
     public  void scheduler(){
@@ -76,15 +70,6 @@ public class MyScheduler {
                     simpleMailMessage.setSubject(templateMessage.getTemplateName()+" for "+rcp.getName()+" daily");
                     javaMailSender.send(simpleMailMessage);
                     log.info("success send email daily");
-                    // send wa
-                    Twilio.init(ACCOUNT_SID,AUTH_TOKEN);
-                    Message messageWa = Message.creator(
-                            new com.twilio.type.PhoneNumber("+6287718281498"),
-                            new com.twilio.type.PhoneNumber("+13613016066"),
-                            "Hai "+rcp.getName()+" Ini adalah pesan Daily sebagai pengingat "+templateMessage.getBodyMessage()+" Terima kasih.."
-
-                    ).create();
-
                     //save report
                     report.setReportId("REP"+AutoIncrementHelper.increment(reportRepository.getLastId()));
                     report.setDateSent(dateNow);

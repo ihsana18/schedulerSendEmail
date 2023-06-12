@@ -22,5 +22,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("forward:/account/index");
+		registry.addViewController("/report/export").setViewName("forward:/report/index");
     }
 }

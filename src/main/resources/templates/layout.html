@@ -38,6 +38,10 @@
 			<i class="fas fa-file-invoice"></i>
 			<span>Report</span>
 		</a>
+		<a class="menu category" th:href="@{/data/upsertForm}">
+			<i class="fas fa-file-invoice"></i>
+			<span>Data</span>
+		</a>
 		<a class="menu order" th:href="@{/swagger-ui/index.html}">
 			<i class="fas fa-server"></i>
 			<span>API Doc</span>
@@ -55,7 +59,6 @@
             <div class="sign-out">
                 <form th:attr="action=@{/logout}" method="POST">
 					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
 					<button type="submit"><i class="fas fa-sign-out-alt"></i></i></button>
 				</form>
             </div>

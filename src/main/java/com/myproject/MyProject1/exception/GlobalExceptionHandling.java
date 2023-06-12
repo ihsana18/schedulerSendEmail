@@ -21,7 +21,7 @@ public class GlobalExceptionHandling{
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> response(RuntimeException e){
+    public static ResponseEntity<ErrorResponse> runtimeException(RuntimeException e){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         errorResponse.setMessage(e.getMessage());

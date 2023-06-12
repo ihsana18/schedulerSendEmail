@@ -75,4 +75,10 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
         List<DropdownDTO> dtoList = templateMessageRepository.dropdownTemplate();
         return dtoList;
     }
+
+    @Override
+    public boolean checkTemplate(String name) {
+        Long totalTemplate = templateMessageRepository.countByName(name);
+        return (totalTemplate > 0) ? true : false;
+    }
 }
