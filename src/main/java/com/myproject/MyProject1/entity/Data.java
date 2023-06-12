@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Data")
@@ -28,5 +29,8 @@ public class Data {
 
     @Column(name = "inputBy")
     private String inputBy;
+
+    @Column(name = "createDate")
+    private LocalDate createdDate;
 
 }

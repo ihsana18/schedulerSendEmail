@@ -99,7 +99,9 @@ public class RecipientServiceImpl implements RecipientService {
     public boolean checkUpsert(String valueName, String valueCurrentName) {
         Recipient rcpExist = recipientRepository.getByName(valueCurrentName);
         int checkName = recipientRepository.countByName(valueName);
-        if(rcpExist!=null && checkName==1 && valueName != valueCurrentName){
+        if(valueName.toLowerCase().equals(valueCurrentName.toLowerCase())&& checkName==1){
+            return true;
+        }else if(rcpExist!=null && checkName==1 && valueName != valueCurrentName){
             return true;
         }else if(rcpExist==null && checkName==1){
             return true;
