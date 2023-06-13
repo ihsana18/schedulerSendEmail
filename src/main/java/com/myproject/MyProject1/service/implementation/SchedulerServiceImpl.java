@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class SchedulerServiceImpl implements SchedulerService {
@@ -30,10 +31,19 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public Object save(InsertScheduler dto) {
-        Scheduler schedExisting = schedulerRepository.findByName(dto.getCurrentSchedulerName());
+
         LocalTime sendTime = LocalTime.parse(dto.getSendTime());
         TemplateMessage templateMessage = templateMessageRepository.findByName(dto.getTemplateName());
-        if(schedExisting==null){
+        if(dto.getCurrentSchedulerName()!=null){
+            Scheduler schedExisting = schedulerRepository.findByName(dto.getCurrentSchedulerName());
+            schedExisting.setSchedulerName(dto.getSchedulerName());
+            schedExisting.setPeriod(dto.getPeriod());
+            schedExisting.setSendTime(sendTime);
+            schedExisting.setIntervalMonthly(dto.getIntervalMonth());
+            schedExisting.setIntervalWeek(dto.getIntervalWeek());
+            schedExisting.setTemplateMessageId(templateMessage.getTemplateMessageId());
+            schedulerRepository.save(schedExisting);
+        }else {
             scheduler.setSchedulerId("SCH"+ AutoIncrementHelper.increment(schedulerRepository.getLastId()));
             scheduler.setPeriod(dto.getPeriod());
             scheduler.setSchedulerName(dto.getSchedulerName());
@@ -42,14 +52,7 @@ public class SchedulerServiceImpl implements SchedulerService {
             scheduler.setIntervalMonthly(dto.getIntervalMonth());
             scheduler.setIntervalWeek(dto.getIntervalWeek());
             schedulerRepository.save(scheduler);
-        }else {
-            schedExisting.setSchedulerName(dto.getSchedulerName());
-            schedExisting.setPeriod(dto.getPeriod());
-            schedExisting.setSendTime(sendTime);
-            schedExisting.setIntervalMonthly(dto.getIntervalMonth());
-            schedExisting.setIntervalWeek(dto.getIntervalWeek());
-            schedExisting.setTemplateMessageId(templateMessage.getTemplateMessageId());
-            schedulerRepository.save(schedExisting);
+
         }
         return "success insert scheduler";
     }
@@ -71,7 +74,23 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public void delete(String schedulerName) {
-        Scheduler schedulerDelete =schedulerRepository.findByName(schedulerName);
-        schedulerRepository.deleteById(schedulerDelete.getSchedulerId());
+        List<Scheduler> schedulerDelete =schedulerRepository.findBySchName(schedulerName);
+        for(Scheduler sch : schedulerDelete){
+            schedulerRepository.deleteById(sch.getSchedulerId());
+        }
+    }
+
+    @Override
+    public boolean checkSchedlerName(String valueSchedulerName, String valueCurrentSchedName) {
+        Scheduler sch = schedulerRepository.findByName(valueCurrentSchedName);
+        int countSch = schedulerRepository.countByName(valueSchedulerName);
+        if(valueSchedulerName.toLowerCase().equals(valueCurrentSchedName.toLowerCase())){
+            return false;
+        }else if(sch!=null && countSch==1 && valueSchedulerName != valueCurrentSchedName){
+            return true;
+        }else if(sch==null && countSch==1){
+            return true;
+        }
+        return false;
     }
 }

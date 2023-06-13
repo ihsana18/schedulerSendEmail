@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface SchedulerRepository extends JpaRepository<Scheduler, String> {
     @Query(value = "SELECT TOP 1(sch.schedulerId) FROM Scheduler sch ORDER BY sch.schedulerId DESC ",nativeQuery = true)
     String getLastId();
@@ -25,4 +27,12 @@ public interface SchedulerRepository extends JpaRepository<Scheduler, String> {
 
     @Query("select new com.myproject.MyProject1.dto.InsertScheduler(sch.schedulerName,sch.schedulerName,sch.period,sch.intervalWeek,sch.intervalMonthly,tmp.templateName,sch.sendTime) from Scheduler sch JOIN sch.templateMessage tmp WHERE sch.schedulerName = :currentSchedulerName")
     InsertScheduler getByName(String currentSchedulerName);
+
+
+    @Query("select count(sch) FROM Scheduler sch where sch.schedulerName = :valueSchedulerName")
+    int countByName(String valueSchedulerName);
+
+
+    @Query("select sch from Scheduler sch WHERE sch.schedulerName = :schedulerName")
+    List<Scheduler> findBySchName(String schedulerName);
 }

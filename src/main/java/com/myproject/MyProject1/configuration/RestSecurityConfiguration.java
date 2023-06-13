@@ -25,9 +25,9 @@ public class RestSecurityConfiguration{
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.antMatcher("/api/**").csrf().disable()
+        http.antMatcher("/api/user/**").csrf().disable()
             .authorizeRequests()
-            .antMatchers("/api/authenticate").permitAll()
+            .antMatchers().permitAll()
 //                .antMatchers("/api/register","/template/**","/recipient/**","/scheduler/**").hasAuthority("Administrator")
 //                .antMatchers("/template/list-template","/recipient/list-recipient","/scheduler/**").hasAuthority("Data Entry")
             .anyRequest().authenticated()

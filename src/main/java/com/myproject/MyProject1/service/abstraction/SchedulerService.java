@@ -12,4 +12,6 @@ public interface SchedulerService {
     InsertScheduler getSchedulerByName(String currentSchedulerName);
 
     void delete(String schedulerName);
+
+    boolean checkSchedlerName(String valueSchedulerName, String valueCurrentSchedName);
 }

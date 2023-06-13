@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,9 +47,22 @@ public class TemplateMessageController {
     }
 
     @PostMapping("upsert")
-    public String upsert(@Valid @ModelAttribute("template")InsertTemplateMessage dto){
-        service.save(dto);
-        return "redirect:/template/index";
+    public String upsert(@Valid @ModelAttribute("template")InsertTemplateMessage dto, BindingResult bindingResult,Model model){
+        if(bindingResult.hasErrors()){
+            if(dto.getCurrentTemplateName()!=null){
+                model.addAttribute("template",dto);
+                model.addAttribute("currentTemplateName",dto.getCurrentTemplateName());
+                model.addAttribute("type","Update");
+            }else{
+                model.addAttribute("template",dto);
+                model.addAttribute("type","Insert");
+            }
+            return "template/template-form";
+        }else{
+            service.save(dto);
+            return "redirect:/template/index";
+
+        }
     }
 
     @GetMapping("delete")

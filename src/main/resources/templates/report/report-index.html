@@ -47,8 +47,22 @@
 		        </tfoot>
 			</table>
 			<p align="right">
-				<a  class="blue-button create-button" th:href="@{/report/exportForm}">Export To Excel</a>
+				<button class="open-button" onclick="openForm()">Export To Excel</button>
 			</p>
+		</div>
+		<div class="form-popup" id="myForm">
+			<form method="post" class="form-container" th:attr="action=@{/report/export}" th:object="${report}">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				<h1>Export To Excel</h1>
+				<label ><b>Month</b></label>
+				<select th:field="*{month}">
+					<option th:value=null>-</option>
+					<option th:each="option : ${month}" th:value="${option.value}"
+							th:text="${option.text}" th:selected="${option.value == role}"/>
+				</select>
+				<button type="submit" class="blue-button">Export</button>
+				<button type="button" class="open-button" onclick="closeForm()">Close</button>
+			</form>
 		</div>
 	</main>
 	<footer th:replace="~{layout :: footer}"></footer>

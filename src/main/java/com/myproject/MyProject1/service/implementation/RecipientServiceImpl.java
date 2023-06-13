@@ -36,22 +36,13 @@ public class RecipientServiceImpl implements RecipientService {
     public Object save(InsertRecipient dto) {
         TemplateMessage templateMessage = templateMessageRepository.findByName(dto.getTemplateName());
         Recipient recipientExist= recipientRepository.getByName(dto.getCurrentName());
-//        int check =recipientRepository.countByName(dto.getName());
         if(recipientExist!=null){
-//            if(check==0 || check==1 && dto.getCurrentName().toLowerCase().equals(dto.getName().toLowerCase())){
                 recipientExist.setName(dto.getName());
                 recipientExist.setEmail(dto.getEmail());
                 recipientExist.setTemplateMessageId(templateMessage.getTemplateMessageId());
                 recipientRepository.save(recipientExist);
-//            }else if(check==1&& dto.getCurrentName().toLowerCase()!=dto.getName().toLowerCase()){
-//                bindingResult.addError(new FieldError("recipient","name","name already exist"));
-//            }
 
         }else{
-//            if(check==1){
-//                bindingResult.addError(new FieldError("recipient","name","name already exist"));
-
-//            }
             recipient.setRecipientId("RCP"+ AutoIncrementHelper.increment(recipientRepository.getLastId()));
             recipient.setName(dto.getName());
             recipient.setEmail(dto.getEmail());
@@ -99,8 +90,8 @@ public class RecipientServiceImpl implements RecipientService {
     public boolean checkUpsert(String valueName, String valueCurrentName) {
         Recipient rcpExist = recipientRepository.getByName(valueCurrentName);
         int checkName = recipientRepository.countByName(valueName);
-        if(valueName.toLowerCase().equals(valueCurrentName.toLowerCase())&& checkName==1){
-            return true;
+        if(valueName.toLowerCase().equals(valueCurrentName.toLowerCase())){
+            return false;
         }else if(rcpExist!=null && checkName==1 && valueName != valueCurrentName){
             return true;
         }else if(rcpExist==null && checkName==1){

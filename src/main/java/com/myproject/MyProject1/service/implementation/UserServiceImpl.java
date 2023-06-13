@@ -94,4 +94,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User deleteUser = userRepository.findByUsername(username);
         userRepository.deleteById(deleteUser.getUserId());
     }
+
+    @Override
+    public boolean checkUsername(String value, String valueCurrent) {
+        User userExist = userRepository.findByUsername(valueCurrent);
+        int countUser=userRepository.countByName(value);
+        if(value.toLowerCase().equals(valueCurrent.toLowerCase())){
+            return false;
+        }else if(userExist!=null && countUser==1 && value != valueCurrent){
+            return true;
+        }else if(userExist==null && countUser==1){
+            return true;
+        }
+        return false;
+    }
 }

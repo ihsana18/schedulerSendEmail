@@ -36,9 +36,6 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
         }else{
             templateMessage.setTemplateMessageId("TMP"+AutoIncrementHelper.increment(templateMessageRepository.getLastId()));
             templateMessage.setBodyMessage(dto.getBodyMessage());
-            if(templateMessageRepository.checkName(dto.getTemplateName())==1){
-                throw new RuntimeException("template Name already exist");
-            }
             templateMessage.setTemplateName(dto.getTemplateName());
             templateMessageRepository.save(templateMessage);
 
@@ -77,8 +74,16 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
     }
 
     @Override
-    public boolean checkTemplate(String name) {
-        Long totalTemplate = templateMessageRepository.countByName(name);
-        return (totalTemplate > 0) ? true : false;
+    public boolean checkTemplate(String valueTemplateName,String valueCurrentTemplateName) {
+        TemplateMessage tmpExisting = templateMessageRepository.findByName(valueCurrentTemplateName);
+        int totalTemplate = templateMessageRepository.countByName(valueTemplateName);
+        if(valueTemplateName.toLowerCase().equals(valueCurrentTemplateName.toLowerCase())){
+            return false;
+        }else if(tmpExisting!=null && totalTemplate==1 && valueTemplateName != valueCurrentTemplateName){
+            return true;
+        }else if(tmpExisting==null && totalTemplate==1){
+            return true;
+        }
+        return false;
     }
 }

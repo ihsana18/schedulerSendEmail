@@ -14,12 +14,12 @@ import javax.validation.constraints.NotNull;
 @Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@UniqueTemplateName(message = "templateName already exist",templateName = "templateName",currentTemplateName = "currentTemplateName")
 public class InsertTemplateMessage {
 
     private String currentTemplateName;
     @NotNull(message = "templateName is required")
     @NotBlank(message = "templateName cannot empty")
-    @UniqueTemplateName(message = "templateName already exist")
     private String templateName;
 
     @NotNull(message = "bodyMessage is required")

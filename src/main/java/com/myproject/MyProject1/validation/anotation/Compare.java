@@ -1,6 +1,6 @@
 package com.myproject.MyProject1.validation.anotation;
 
-import com.myproject.MyProject1.validation.validator.UniqueTemplateNameValid;
+import com.myproject.MyProject1.validation.validator.CompareValid;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -9,21 +9,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = UniqueTemplateNameValid.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UniqueTemplateName {
+@Constraint(validatedBy = CompareValid.class)
+public @interface Compare {
     public Class<?>[] groups() default {};
     public Class<? extends Payload>[] payload() default {};
     public String message();
-
-    public String currentTemplateName();
-    public String templateName();
+    public String firstField();
+    public String secondField();
 
     @Target({ ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)
     @interface List {
-        UniqueTemplateName[] value();
+        Compare[] value();
     }
-
 }

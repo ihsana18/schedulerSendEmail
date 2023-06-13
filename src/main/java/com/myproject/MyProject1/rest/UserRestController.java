@@ -7,6 +7,7 @@ import com.myproject.MyProject1.dto.ResponseToken;
 import com.myproject.MyProject1.dto.UserGrid;
 import com.myproject.MyProject1.entity.User;
 import com.myproject.MyProject1.service.abstraction.UserService;
+import com.myproject.MyProject1.utility.CustomPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserRestController {
 
     @Autowired
@@ -35,6 +36,9 @@ public class UserRestController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomPage<ResponseToken> responseToken;
 
     @PostMapping("/authenticate")
     public ResponseEntity<ResponseToken>  login(@RequestBody RequestToken dto){
@@ -51,6 +55,10 @@ public class UserRestController {
         String role = userService.getAccountRole(dto.getUsername());
         String token = jwtToken.generateToken(dto.getUsername(), "secret-key-for-my-project", role,"MyProjectWebUI","Testing");
         ResponseToken response = new ResponseToken(dto.getUsername(), role, token);
+//        responseToken.setData(response);
+//        responseToken.setStatus("success login");
+//        responseToken.setPaging(null);
+//        responseToken.setSuccess(true);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

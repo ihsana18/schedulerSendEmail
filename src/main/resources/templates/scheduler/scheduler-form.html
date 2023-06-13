@@ -8,6 +8,7 @@
 		<form method="post" class="upsert-form" th:attr="action=@{/scheduler/upsert}" th:object="${scheduler}">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			<input type="hidden" th:field="*{currentSchedulerName}"/>
+			<div class="field-validation-error" th:errors="${scheduler}"></div>
 			<table>
 				<tbody>
 					<tr>
@@ -26,7 +27,7 @@
 								<option th:value="weekly">Weekly</option>
 								<option th:value="monthly"> Monthly</option>
 							</select>
-
+							<div class="field-validation-error" th:errors="*{period}"></div>
 						</td>
 					</tr>
 					<tr>
@@ -58,14 +59,7 @@
 						</td>
 
 					</tr>
-					<tr>
-						<td><label>Send*</label></td>
-						<td>
-							<input type="text" th:field="*{send}" readonly>
-							<div class="field-validation-error" th:errors="*{sendTime}"></div>
-						</td>
-
-					</tr>
+							<input type="hidden" th:field="*{send}" >
 					<tr>
 						<td><label>Template Name*</label></td>
 						<td>
@@ -74,6 +68,8 @@
 								<option th:each="option : ${templates}" th:value="${option.value}"
 										th:text="${option.text}" th:selected="${option.value == templateDropdown}"/>
 							</select>
+							<div class="field-validation-error" th:errors="*{templateName}"></div>
+
 
 						</td>
 

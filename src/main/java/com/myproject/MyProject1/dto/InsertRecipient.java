@@ -22,7 +22,7 @@ public class InsertRecipient {
     private String name;
     @NotBlank(message = "email is required")
     @NotNull(message = "email is required")
-    @UniqueRecipientEmail(message = "email already exist")
+//    @UniqueRecipientEmail(message = "email already exist")
     private String email;
     @NotBlank(message = "templateName is required")
     @NotNull(message = "templateName is required")

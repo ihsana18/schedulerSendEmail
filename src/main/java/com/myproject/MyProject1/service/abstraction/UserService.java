@@ -17,4 +17,6 @@ public interface UserService {
     RegisterUser update(RegisterUser dto);
 
     void delete(String username);
+
+    boolean checkUsername(String value, String valueCurrent);
 }

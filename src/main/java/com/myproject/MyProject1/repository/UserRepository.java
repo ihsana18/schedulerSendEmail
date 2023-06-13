@@ -24,4 +24,7 @@ public interface UserRepository extends JpaRepository<User,String> {
     Page<UserGrid> getAll(Pageable pageable, String search);
     @Query("SELECT new com.myproject.MyProject1.dto.RegisterUser(usr.username,usr.username,usr.password,usr.password,usr.email,usr.role) FROM User usr where usr.username = :username")
     RegisterUser getUserByUsername(String username);
+
+    @Query("select count(usr) from User usr where usr.username = :value")
+    int countByName(String value);
 }

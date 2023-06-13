@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,5 +54,22 @@ public class Dropdown {
         roles.add(new DropdownDTO("30", "30"));
         roles.add(new DropdownDTO("31", "31"));
         return roles;
+    }
+
+    public static List<DropdownDTO> getMonth() {
+        List<DropdownDTO> monthDropdown = new ArrayList<>();
+        monthDropdown.add(new DropdownDTO("JANUARY","JANUARY"));
+        monthDropdown.add(new DropdownDTO("FEBRUARY","FEBRUARY"));
+        monthDropdown.add(new DropdownDTO("MARCH","MARCH"));
+        monthDropdown.add(new DropdownDTO("APRIL","APRIL"));
+        monthDropdown.add(new DropdownDTO("MAY","MAY"));
+        monthDropdown.add(new DropdownDTO("JUNE","JUNE"));
+        monthDropdown.add(new DropdownDTO("JULY","JULY"));
+        monthDropdown.add(new DropdownDTO("AUGUST","AUGUST"));
+        monthDropdown.add(new DropdownDTO("SEPTEMBER","SEPTEMBER"));
+        monthDropdown.add(new DropdownDTO("OCTOBER","OCTOBER"));
+        monthDropdown.add(new DropdownDTO("NOVEMBER","NOVEMBER"));
+        monthDropdown.add(new DropdownDTO("DECEMBER","DECEMBER"));
+        return monthDropdown;
     }
 }

@@ -36,4 +36,10 @@ let roleName = mainBody.getAttribute("data-role");
 let formatted = roleName.replace('[', '').replace(']', '').replace('ROLE_', '');
 mainBody.setAttribute("data-role", formatted);
 
-var
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}

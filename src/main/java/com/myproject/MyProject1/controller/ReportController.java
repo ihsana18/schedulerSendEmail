@@ -1,5 +1,7 @@
 package com.myproject.MyProject1.controller;
 
+import com.myproject.MyProject1.dto.Dropdown;
+import com.myproject.MyProject1.dto.DropdownDTO;
 import com.myproject.MyProject1.dto.ExportReportToExcel;
 import com.myproject.MyProject1.dto.ReportGrid;
 import com.myproject.MyProject1.entity.Report;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -29,6 +32,10 @@ public class ReportController {
     @GetMapping("/index")
     public String listReport(@RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "")String search, Model model){
         Page<ReportGrid> grid = service.getList(page,search);
+        List<DropdownDTO> month = Dropdown.getMonth();
+        ExportReportToExcel reportToExcel =new ExportReportToExcel();
+        model.addAttribute("month",month);
+        model.addAttribute("report",reportToExcel);
         model.addAttribute("grid",grid);
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPages",grid.getTotalPages());
@@ -36,20 +43,8 @@ public class ReportController {
         model.addAttribute("breadCrumbs","Report Index");
         return "report/report-index";
     }
-
-    @Autowired
-    private ExportReportToExcel reportToExcel;
-    @GetMapping("/exportForm")
-    public String exportForm(Model model){
-        model.addAttribute("report",reportToExcel);
-        model.addAttribute("type","Export");
-        return "report/export-form";
-    }
-
     @PostMapping("/export")
     public void exportToExcel(HttpServletResponse response, @ModelAttribute("report")ExportReportToExcel dto, Model model) throws IOException {
-        log.info("start date "+ dto.getStartDate().toString());
-        log.info("end date "+dto.getEndDate());
         List<Report> reports = service.getALl();
         // Membuat workbook Excel
         Workbook workbook = new XSSFWorkbook();
@@ -69,8 +64,7 @@ public class ReportController {
         int rowNum = 1;
         log.info("reports size "+reports.size());
         for (Report data : reports) {
-            if(data.getDateSent().equals(dto.getStartDate())||data.getDateSent().isAfter(dto.getStartDate())==true
-           && data.getDateSent().isBefore(dto.getEndDate())==true  || data.getDateSent().equals(dto.getEndDate())){
+            if(data.getDateSent().getMonth().toString().toLowerCase().equals(dto.getMonth().toLowerCase())){
                 log.info("reports size "+reports.size());
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(data.getReportId());
@@ -83,11 +77,11 @@ public class ReportController {
             }
 
         }
-        model.addAttribute("grid",reports);
+        model.addAttribute("report",reports);
 
         // Mengatur tipe konten dan header respons
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=reports tanggal: "+dto.getStartDate()+"-"+dto.getEndDate()+".xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=reports tanggal: "+dto.getMonth()+".xlsx");
 
         // Menulis data ke output stream
         workbook.write(response.getOutputStream());

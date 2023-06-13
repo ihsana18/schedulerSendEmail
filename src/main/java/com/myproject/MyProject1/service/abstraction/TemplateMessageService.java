@@ -18,5 +18,5 @@ public interface TemplateMessageService {
 
     List<DropdownDTO> getTemplates();
 
-    boolean checkTemplate(String name);
+    boolean checkTemplate(String valueTemplateName,String valueCurrentTemplateName);
 }

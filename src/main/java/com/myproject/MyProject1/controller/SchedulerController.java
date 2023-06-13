@@ -7,16 +7,21 @@ import com.myproject.MyProject1.dto.SchedulerGrid;
 import com.myproject.MyProject1.entity.TemplateMessage;
 import com.myproject.MyProject1.service.abstraction.SchedulerService;
 import com.myproject.MyProject1.service.abstraction.TemplateMessageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
 @RequestMapping("/scheduler")
+@Slf4j
 public class SchedulerController {
 
     @Autowired
@@ -49,6 +54,7 @@ public class SchedulerController {
             model.addAttribute("templates",templateDropdown);
         }else{
             InsertScheduler insertScheduler = new InsertScheduler();
+            insertScheduler.setSendTime(LocalTime.now().toString());
             model.addAttribute("templates",templateDropdown);
             model.addAttribute("month",monthlyDropdown);
             model.addAttribute("scheduler",insertScheduler);
@@ -58,9 +64,28 @@ public class SchedulerController {
     }
 
     @PostMapping("upsert")
-    public String upsert(@ModelAttribute("scheduler")InsertScheduler dto,Model model){
-        service.save(dto);
-        return "redirect:/scheduler/index";
+    public String upsert(@Valid @ModelAttribute("scheduler")InsertScheduler dto, BindingResult bindingResult, Model model){
+        List<DropdownDTO> monthlyDropdown = Dropdown.getMonthly();
+        List<DropdownDTO> templateDropdown = templateMessageService.getTemplates();
+        if (bindingResult.hasErrors()){
+            if(dto.getCurrentSchedulerName()!=null){
+                model.addAttribute("month",monthlyDropdown);
+                model.addAttribute("type","Update");
+                model.addAttribute("scheduler",dto);
+                model.addAttribute("currentSchedulerName",dto.getCurrentSchedulerName());
+                model.addAttribute("templates",templateDropdown);
+            }else{
+//                InsertScheduler insertScheduler = new InsertScheduler();
+                model.addAttribute("templates",templateDropdown);
+                model.addAttribute("month",monthlyDropdown);
+                model.addAttribute("scheduler",dto);
+                model.addAttribute("type","Insert");
+            }
+            return "scheduler/scheduler-form";
+        }else{
+            service.save(dto);
+            return "redirect:/scheduler/index";
+        }
     }
 
     @GetMapping("delete")

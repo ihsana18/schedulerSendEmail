@@ -14,9 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Component
 public class ExportReportToExcel {
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    private String month;
 
 }
