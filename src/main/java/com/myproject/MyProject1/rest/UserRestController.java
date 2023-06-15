@@ -41,7 +41,7 @@ public class UserRestController {
     private CustomPage<ResponseToken> responseToken;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<ResponseToken>  login(@RequestBody RequestToken dto){
+    public ResponseEntity<ResponseToken>  login(@Valid @RequestBody RequestToken dto){
         try{
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
             authenticationManager.authenticate(token);

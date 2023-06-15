@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body" th:data-role="${#authentication.getAuthorities()}">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+<main>
+  <div class="grid-container category-index">
+    <form method="get" class="filter" th:attr="action=@{/data/index}">
+      <input type="text" name="year" placeholder="Year..." onchange="year" th:attr="value=${year}">
+      <input type="text" name="month" placeholder="Month..." th:attr="value=${month}">
+      <button class="blue-button" type="submit">Search</button>
+    </form>
+<!--    <a class="blue-button create-button" th:href="@{/recipient/upsertForm}">Insert Recipient</a>-->
+    <table>
+      <thead>
+      <tr>
+        <th>Holiday Name</th>
+        <th>Holiday Date</th>
+        <th>National Holiday</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="data : ${grid}" th:object="${data}">
+        <td th:text="*{holidayName}"></td>
+        <td th:text="*{holidayDate}"></td>
+        <td th:text="*{isNationalHoliday}"></td>
+      </tr>
+      </tbody>
+      <tfoot>
+<!--      <tr>-->
+<!--        <td colspan="3">-->
+<!--          <div class="pagination">-->
+<!--            <div th:text="|page ${currentPage} of ${totalPages}|"></div>-->
+<!--            <div th:if="${totalPages != 0}">-->
+<!--              <a th:each="loop:${#numbers.sequence(1,totalPages)}"-->
+<!--                 th:href="@{/data/index(page=${loop},year=${year},month=${month})}"-->
+<!--                 th:text="${loop}"></a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </td>-->
+<!--      </tr>-->
+      </tfoot>
+    </table>
+  </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

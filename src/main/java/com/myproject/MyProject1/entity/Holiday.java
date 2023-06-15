@@ -1,10 +1,10 @@
 package com.myproject.MyProject1.entity;
 
+import com.myproject.MyProject1.validation.anotation.Compare;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -14,23 +14,22 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Data")
+@Table(name = "Holiday")
+@Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter @Getter
 @Component
-public class Data {
+public class Holiday {
     @Id
-    @Column(name = "dataId")
-    private String dataId;
+    @Column(name = "holidayId")
+    private String holidayId;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "holidayName")
+    private String holidayName;
 
-    @Column(name = "inputBy")
-    private String inputBy;
+    @Column(name = "holidayDate")
+    private String holidayDate;
 
-    @Column(name = "createDate")
-    private LocalDate createdDate;
-
+    @Column(name = "nationalHoliday")
+    private boolean nationalHoliday;
 }
