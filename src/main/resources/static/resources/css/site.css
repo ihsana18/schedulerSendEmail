@@ -225,6 +225,21 @@ html {
 .upsert-form tr td:first-child {
     padding-right: 20px;
 }
+[type=time]{
+        color: #9badd5;
+        border: none;
+        outline: none;
+        color: #9badd5;
+        display: inline-block;
+        width: 100px;
+        height: 30px;
+        box-sizing: border-box;
+        padding: 6px;
+        font-size: 12px;
+        background-color: #0e1122;
+        border-radius: 4px;
+        vertical-align: middle;
+}
 [type=text], select, [type=date], [type=tel], [type=email], [type=number], [type=datetime-local] {
     border: none;
     outline: none;

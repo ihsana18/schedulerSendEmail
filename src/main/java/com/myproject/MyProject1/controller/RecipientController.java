@@ -2,9 +2,13 @@ package com.myproject.MyProject1.controller;
 
 import com.myproject.MyProject1.dto.DropdownDTO;
 import com.myproject.MyProject1.dto.InsertRecipient;
+import com.myproject.MyProject1.dto.RecipientAssignTemplate;
 import com.myproject.MyProject1.dto.RecipientGrid;
+import com.myproject.MyProject1.entity.Recipient;
+import com.myproject.MyProject1.entity.TemplateMessage;
 import com.myproject.MyProject1.exception.ErrorResponse;
 import com.myproject.MyProject1.exception.GlobalExceptionHandling;
+import com.myproject.MyProject1.repository.RecipientRepository;
 import com.myproject.MyProject1.service.abstraction.RecipientService;
 import com.myproject.MyProject1.service.abstraction.TemplateMessageService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +22,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -65,16 +71,13 @@ public class RecipientController {
 
     @PostMapping("upsert")
     public String upsert(@Valid @ModelAttribute("recipient")InsertRecipient dto, BindingResult bindingResult,Model model) {
-        List<DropdownDTO> templateDropdown = templateMessageService.getTemplates();
             if (bindingResult.hasErrors()) {
                 if (dto.getCurrentName() != null) {
                     model.addAttribute("recipient", dto);
-                    model.addAttribute("templates", templateDropdown);
                     model.addAttribute("currentName", dto.getCurrentName());
                     model.addAttribute("type", "Update");
                 } else {
                     model.addAttribute("recipient", dto);
-                    model.addAttribute("templates", templateDropdown);
                     model.addAttribute("type", "Insert");
                 }
                 return "recipient/recipient-form";
@@ -87,8 +90,41 @@ public class RecipientController {
 
     @GetMapping("delete")
     public String delete(@RequestParam(required = true)String name){
-
         service.delete(name);
         return "redirect:/recipient/index";
+    }
+
+
+    @GetMapping("/assign-template")
+    public String assignTemplate(@RequestParam(required = true) String name,Model model){
+        RecipientAssignTemplate assignTemplate = new RecipientAssignTemplate();
+        List<TemplateMessage> dropDownTemplate = templateMessageService.dropdownTemplate(name);
+        List<TemplateMessage> templateMessages = templateMessageService.listTemplateByName(name);
+        model.addAttribute("template",dropDownTemplate);
+        model.addAttribute("listTemplate",templateMessages);
+        assignTemplate.setName(name);
+        model.addAttribute("name",name);
+        model.addAttribute("breadCrumbs","Assign Template");
+        model.addAttribute("recipient",assignTemplate);
+        return "recipient/assign-template";
+
+    }
+    @PostMapping("/assign")
+    public String assign(@Valid @ModelAttribute("recipient")RecipientAssignTemplate dto, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            List<DropdownDTO> dropDownTemplate = templateMessageService.getTemplates();
+            model.addAttribute("template",dropDownTemplate);
+            model.addAttribute("breadCrumbs","Assign Template");
+            return "recipient/assign-template";
+        }
+        service.assignTemplate(dto);
+        redirectAttributes.addAttribute("name",dto.getName());
+        return "redirect:/recipient/assign-template";
+    }
+    @GetMapping("/detach-template")
+    public String detachTemplate(@RequestParam(required = true)String name,@RequestParam(required = true)String templateName,RedirectAttributes redirectAttributes){
+        redirectAttributes.addAttribute("name",name);
+        service.detach(name,templateName);
+        return "redirect:/recipient/assign-template";
     }
 }

@@ -24,7 +24,7 @@ public class InsertRecipient {
     @NotNull(message = "email is required")
 //    @UniqueRecipientEmail(message = "email already exist")
     private String email;
-    @NotBlank(message = "templateName is required")
-    @NotNull(message = "templateName is required")
-    private String templateName;
+//    @NotBlank(message = "templateName is required")
+//    @NotNull(message = "templateName is required")
+//    private String templateName;
 }

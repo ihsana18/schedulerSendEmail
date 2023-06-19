@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body" th:data-role="${#authentication.getAuthorities()}">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+<main>
+
+    <form method="post" class="upsert-form" th:attr="action=@{/recipient/assign}" th:object="${recipient}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <div class="field-validation-error" th:errors="${recipient}"></div>
+        <table>
+            <tbody>
+            <tr>
+                <td><label>Name*</label></td>
+                <td>
+                    <input type="text" th:field="*{name}" readonly>
+                    <div class="field-validation-error" th:errors="*{name}"></div>
+                </td>
+            </tr>
+            				<tr>
+            					<td>Template Name</td>
+            					<td>
+            						<select th:field="*{templateName}">
+                                        <option th:value=null>-</option>
+                                            <option th:each="option : ${template}" th:value="${option.templateName}"
+                                                   th:text="${option.templateName}" th:selected="${option.templateName}"/>
+            						</select>
+            						<div class="field-validation-error" th:errors="*{templateName}"></div>
+            					</td>
+            				</tr>
+            </tbody>
+        </table>
+        <button class="blue-button" type="submit" >Submit</button>
+        <div class="grid-container category-index">
+            <table>
+                <thead>
+                <tr>
+                    <th>Template Name</th>
+                    <th>Body Message</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tmp :${listTemplate}" th:object="${tmp}">
+                    <td th:text="*{templateName}"></td>
+                    <td th:text="*{bodyMessage}"></td>
+                    <td >
+                        <a th:href="@{/recipient/detach-template(name=${name},templateName=*{templateName})}" class="blue-button delete-button">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

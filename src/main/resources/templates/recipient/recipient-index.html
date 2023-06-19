@@ -16,7 +16,7 @@
 		            <tr>
 		                <th>Name</th>
 		                <th>Email</th>
-						<th>Template Name</th>
+						<th>Templates</th>
 						<th>Action</th>
 		            </tr>
 		        </thead>
@@ -24,8 +24,9 @@
 			        <tr th:each="recipient : ${grid}" th:object="${recipient}">
 						<td th:text="*{name}"></td>
 						<td th:text="*{email}"></td>
-						<td th:text="*{templateName}"></td>
+						<td th:text="*{templateNames}"></td>
 						<td>
+							<a th:href="@{/recipient/assign-template(name=*{name})}" class="blue-button update-button">Assign Template</a>
 							<a th:href="@{/recipient/upsertForm(currentName=*{name})}" class="blue-button update-button">Edit</a>
 							<a th:href="@{/recipient/delete(name=*{name})}" class="blue-button delete-button">Delete</a>
 						</td>

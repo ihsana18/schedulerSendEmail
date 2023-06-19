@@ -1,6 +1,7 @@
 package com.myproject.MyProject1.service.implementation;
 
 import com.myproject.MyProject1.dto.InsertRecipient;
+import com.myproject.MyProject1.dto.RecipientAssignTemplate;
 import com.myproject.MyProject1.dto.RecipientGrid;
 import com.myproject.MyProject1.entity.Recipient;
 import com.myproject.MyProject1.entity.TemplateMessage;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,19 +36,16 @@ public class RecipientServiceImpl implements RecipientService {
 
     @Override
     public Object save(InsertRecipient dto) {
-        TemplateMessage templateMessage = templateMessageRepository.findByName(dto.getTemplateName());
         Recipient recipientExist= recipientRepository.getByName(dto.getCurrentName());
         if(recipientExist!=null){
                 recipientExist.setName(dto.getName());
                 recipientExist.setEmail(dto.getEmail());
-                recipientExist.setTemplateMessageId(templateMessage.getTemplateMessageId());
                 recipientRepository.save(recipientExist);
 
         }else{
             recipient.setRecipientId("RCP"+ AutoIncrementHelper.increment(recipientRepository.getLastId()));
             recipient.setName(dto.getName());
             recipient.setEmail(dto.getEmail());
-            recipient.setTemplateMessageId(templateMessage.getTemplateMessageId());
             recipientRepository.save(recipient);
 
         }
@@ -55,13 +54,11 @@ public class RecipientServiceImpl implements RecipientService {
 
     @Override
     public Page<RecipientGrid> findAll(int page, String search) {
-        if(page==0){
-            List<RecipientGrid> recipients=recipientRepository.getAll(search);
-            Page<RecipientGrid> pageReturn = new PageImpl<>(recipients);
-            return pageReturn;
-        }
         Pageable pageable = PageRequest.of(page-1,5);
         Page<RecipientGrid> pageData=recipientRepository.getAllData(pageable,search);
+        for(RecipientGrid rcg : pageData.getContent()){
+            rcg.setTemplateNames(recipientRepository.getTemplateName(rcg.getName()));
+        }
         return pageData;
     }
 
@@ -98,6 +95,22 @@ public class RecipientServiceImpl implements RecipientService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void assignTemplate(RecipientAssignTemplate dto) {
+        TemplateMessage templateMessage = templateMessageRepository.findByName(dto.getTemplateName());
+        Recipient rcp = recipientRepository.getByName(dto.getName());
+        rcp.getTemplateMessages().add(templateMessage);
+        recipientRepository.save(rcp);
+    }
+
+    @Override
+    public void detach(String name, String templateName) {
+        Recipient rcp = recipientRepository.getByName(name);
+        TemplateMessage templateMessage=  templateMessageRepository.findByName(templateName);
+        rcp.getTemplateMessages().remove(templateMessage);
+        recipientRepository.save(rcp);
     }
 
 

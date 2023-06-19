@@ -3,11 +3,16 @@ package com.myproject.MyProject1.service.implementation;
 import com.myproject.MyProject1.dto.DropdownDTO;
 import com.myproject.MyProject1.dto.InsertTemplateMessage;
 import com.myproject.MyProject1.dto.TemplateMessageGrid;
+import com.myproject.MyProject1.entity.Recipient;
 import com.myproject.MyProject1.entity.TemplateMessage;
+import com.myproject.MyProject1.repository.RecipientRepository;
 import com.myproject.MyProject1.repository.TemplateMessageRepository;
 import com.myproject.MyProject1.service.abstraction.TemplateMessageService;
 import com.myproject.MyProject1.utility.AutoIncrementHelper;
-import io.swagger.v3.oas.annotations.servers.Server;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +28,9 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
 
     @Autowired
     private TemplateMessageRepository templateMessageRepository;
+
+    @Autowired
+    private RecipientRepository recipientRepository;
 
     @Autowired
     TemplateMessage templateMessage;
@@ -85,5 +94,27 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<TemplateMessage> dropdownTemplate(String name) {
+        Recipient rcp = recipientRepository.getByName(name);
+        if (rcp.getTemplateMessages().isEmpty()) {
+            List<TemplateMessage> templateMessages = templateMessageRepository.findAll();
+            return templateMessages;
+        }else {
+            List<String> listString = new ArrayList<>();
+            for (TemplateMessage tmp : rcp.getTemplateMessages()) {
+                listString.add(tmp.getTemplateName());
+            }
+            List<TemplateMessage> templateMessages = templateMessageRepository.getAllTemplate(listString);
+            return templateMessages;
+        }
+    }
+
+    @Override
+    public List<TemplateMessage> listTemplateByName(String name) {
+        List<TemplateMessage> templateMessages = templateMessageRepository.getListTemplateByRecipientName(name);
+        return templateMessages;
     }
 }

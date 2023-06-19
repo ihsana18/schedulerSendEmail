@@ -26,16 +26,16 @@
 		                	<div class="field-validation-error" th:errors="*{email}"></div>
 		                </td>
 		            </tr>
-				<tr>
-					<td>Template Name</td>
-					<td>
-						<select th:field="*{templateName}">
-							<option th:each="option : ${templates}" th:value="${option.value}"
-									th:text="${option.text}" th:selected="${option.value}"/>
-						</select>
-						<div class="field-validation-error" th:errors="*{templateName}"></div>
-					</td>
-				</tr>
+<!--				<tr>-->
+<!--					<td>Template Name</td>-->
+<!--					<td>-->
+<!--						<select th:field="*{templateName}">-->
+<!--							<option th:each="option : ${templates}" th:value="${option.value}"-->
+<!--									th:text="${option.text}" th:selected="${option.value}"/>-->
+<!--						</select>-->
+<!--						<div class="field-validation-error" th:errors="*{templateName}"></div>-->
+<!--					</td>-->
+<!--				</tr>-->
 				</tbody>
 			</table>
 		    <button class="blue-button" type="submit" th:text="${type} + ' Recipient'"></button>

@@ -31,11 +31,10 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public Object save(InsertScheduler dto) {
-
         LocalTime sendTime = LocalTime.parse(dto.getSendTime());
         TemplateMessage templateMessage = templateMessageRepository.findByName(dto.getTemplateName());
-        if(dto.getCurrentSchedulerName()!=null){
-            Scheduler schedExisting = schedulerRepository.findByName(dto.getCurrentSchedulerName());
+        Scheduler schedExisting = schedulerRepository.findByName(dto.getCurrentSchedulerName());
+        if(schedExisting!=null){
             schedExisting.setSchedulerName(dto.getSchedulerName());
             schedExisting.setPeriod(dto.getPeriod());
             schedExisting.setSendTime(sendTime);

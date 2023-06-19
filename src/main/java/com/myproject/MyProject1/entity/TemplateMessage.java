@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.entity;
 
+import com.myproject.MyProject1.dto.DropdownDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,9 @@ public class TemplateMessage {
     @Column(name ="bodyMessage")
     private String bodyMessage;
 
-    @OneToMany(mappedBy = "templateMessage")
-    private List<Recipient> recipient;
+    @ManyToMany
+    @JoinTable(name = "RecipientTemplate",
+            joinColumns =@JoinColumn(name = "templateMessageId"),
+            inverseJoinColumns = @JoinColumn(name = "recipientId"))
+    private List<Recipient> recipients;
 }

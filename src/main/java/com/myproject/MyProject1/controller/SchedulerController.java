@@ -54,7 +54,6 @@ public class SchedulerController {
             model.addAttribute("templates",templateDropdown);
         }else{
             InsertScheduler insertScheduler = new InsertScheduler();
-            insertScheduler.setSendTime(LocalTime.now().toString());
             model.addAttribute("templates",templateDropdown);
             model.addAttribute("month",monthlyDropdown);
             model.addAttribute("scheduler",insertScheduler);

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Recipient")
@@ -25,11 +26,10 @@ public class Recipient {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "templateMessageId")
-    private String templateMessageId;
-
-    @ManyToOne
-    @JoinColumn(name = "templateMessageId",updatable = false,insertable = false)
-    private TemplateMessage templateMessage;
+    @ManyToMany
+    @JoinTable(name = "RecipientTemplate",
+        joinColumns =@JoinColumn(name = "recipientId"),
+        inverseJoinColumns = @JoinColumn(name = "templateMessageId"))
+    private List<TemplateMessage> templateMessages;
 
 }

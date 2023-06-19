@@ -42,4 +42,16 @@ public interface TemplateMessageRepository extends JpaRepository<TemplateMessage
 
     @Query("SELECT COUNT(tmp) FROM TemplateMessage tmp WHERE tmp.templateName = :name")
     int countByName(String name);
+
+
+    @Query(value = "select new com.myproject.MyProject1.dto.DropdownDTO(tmp.templateName,tmp.templateName) " +
+            "FROM TemplateMessage tmp where tmp.templateName != :templateName" )
+    List<DropdownDTO> getListTemplate(String templateName);
+
+    @Query("select tmp from TemplateMessage tmp where tmp.templateName NOT IN (:listString)")
+    List<TemplateMessage> getAllTemplate(List<String> listString);
+
+
+    @Query("select tmp from TemplateMessage tmp JOIN tmp.recipients rcp WHERE rcp.name = :name")
+    List<TemplateMessage> getListTemplateByRecipientName(String name);
 }
