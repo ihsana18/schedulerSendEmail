@@ -27,6 +27,12 @@ public class TemplateMessage {
     @Column(name ="bodyMessage")
     private String bodyMessage;
 
+    @Column(name = "AttachmentType")
+    private String attachmentType;
+
+    @Column(name = "AttachmentDirectory")
+    private String attachmentDirectory;
+
     @ManyToMany
     @JoinTable(name = "RecipientTemplate",
             joinColumns =@JoinColumn(name = "templateMessageId"),

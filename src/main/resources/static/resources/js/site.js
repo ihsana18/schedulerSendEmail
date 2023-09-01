@@ -43,3 +43,33 @@ function openForm() {
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
+
+let attchType = 0;
+
+function changeHidden(data){
+attchType = data.value;
+hideInput();
+}
+
+let labelAttchFile = document.getElementById("afile");
+
+function hideInput(){
+var inputFile = document.getElementById("fileAttachment");
+if(attchType==0 || attchType==null){
+fileAttachment.type ="hidden";
+labelAttchFile.setAttribute("hidden", "hidden");
+}else if(attchType=="Image"){
+fileAttachment.type ="file"
+fileAttachment.setAttribute("accept","image/jpg,image/png,image/jpeg")
+labelAttchFile.removeAttribute("hidden")
+}else if(attchType=="Video"){
+ fileAttachment.type ="file"
+ fileAttachment.setAttribute("accept","video/*")
+ labelAttchFile.removeAttribute("hidden")
+}else if(attchType=="Document"){
+  fileAttachment.type ="file"
+  fileAttachment.setAttribute("accept",".xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf")
+  labelAttchFile.removeAttribute("hidden")
+}
+}
+

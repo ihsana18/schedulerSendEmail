@@ -81,7 +81,7 @@ public class ReportController {
 
         // Mengatur tipe konten dan header respons
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=reports tanggal: "+dto.getMonth()+".xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=reports bulan "+dto.getMonth()+".xlsx");
 
         // Menulis data ke output stream
         workbook.write(response.getOutputStream());

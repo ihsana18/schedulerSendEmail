@@ -25,6 +25,24 @@
 		                	<div class="field-validation-error" th:errors="*{bodyMessage}"></div>
 		                </td>
 		            </tr>
+					<tr>
+						<td><label>Attachment Type</label></td>
+						<td>
+							<select th:field="*{attachmentType}" onchange="changeHidden(this)">
+								<option th:value=null>-</option>
+								<option th:each="option : ${attachmentTypes}" th:value="${option.value}"
+										th:text="${option.text}" th:selected="${option.value == attachmentTypes}"/>
+							</select>
+							<div class="field-validation-error" th:errors="*{attachmentType}"></div>
+						</td>
+					</tr>
+				<tr>
+					<td><label id="afile" hidden="hidden">Attachment File</label></td>
+					<td>
+						<input type="hidden"  th:field="*{fileAttachment}" >
+						<div class="field-validation-error">[[${error}]]</div>
+					</td>
+				</tr>
 				</tbody>
 			</table>
 		    <button class="blue-button" type="submit" th:text="${type} + ' Template'"></button>

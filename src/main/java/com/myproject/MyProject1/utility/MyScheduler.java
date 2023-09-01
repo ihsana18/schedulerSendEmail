@@ -55,9 +55,10 @@ public class MyScheduler {
         List<Scheduler> schedulers = schedulerRepository.findAll();
         LocalTime now = LocalTime.now();
         LocalDate dateNow = LocalDate.now();
-//        List<DataGrid> holidays = dataService.getHolday(String.valueOf(dateNow.getYear()),"");
+        LocalDate monthEnd = dateNow.withDayOfMonth(dateNow.getMonth().length(dateNow.isLeapYear()));
         String dayOfMonth = String.valueOf(dateNow.getDayOfMonth());
         for(Scheduler sch : schedulers){
+//            int intervalMonth = Integer.parseInt(sch.getIntervalMonthly());
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             if(sch.getPeriod().toLowerCase().equals("daily") && now.getMinute()==sch.getSendTime().getMinute()&& now.getHour()==sch.getSendTime().getHour()){
                 List<Recipient> recipients = recipientRepository.findByTemplateId(sch.getTemplateMessageId());
@@ -101,6 +102,7 @@ public class MyScheduler {
                         reportRepository.save(report);
                     }
             } if(sch.getPeriod().toLowerCase().equals("monthly")&&sch.getIntervalMonthly().equals(dayOfMonth) && now.getHour()==sch.getSendTime().getHour() && sch.getSendTime().getMinute()==now.getMinute()){
+                log.info("scheduler monthly running");
                 List<Recipient> recipients = recipientRepository.findByTemplateId(sch.getTemplateMessageId());
                 TemplateMessage templateMessage = templateMessageRepository.findById(sch.getTemplateMessageId()).get();
                 simpleMailMessage.setFrom(sender);
@@ -120,6 +122,26 @@ public class MyScheduler {
                     reportRepository.save(report);
                 }
 
+            } if(sch.getPeriod().toLowerCase().equals("monthly")&&Integer.parseInt(sch.getIntervalMonthly()) > monthEnd.getDayOfMonth()&&monthEnd.getDayOfMonth()==dateNow.getDayOfMonth() && now.getHour()==sch.getSendTime().getHour() && sch.getSendTime().getMinute()==now.getMinute()&& now.getHour()==sch.getSendTime().getHour() && sch.getSendTime().getMinute()==now.getMinute()){
+                log.info("scheduler month end running ");
+                List<Recipient> recipients = recipientRepository.findByTemplateId(sch.getTemplateMessageId());
+                TemplateMessage templateMessage = templateMessageRepository.findById(sch.getTemplateMessageId()).get();
+                simpleMailMessage.setFrom(sender);
+                simpleMailMessage.setText(templateMessage.getBodyMessage());
+                for(Recipient rcp : recipients){
+                    simpleMailMessage.setTo(rcp.getEmail());
+                    simpleMailMessage.setSubject(templateMessage.getTemplateName()+" for "+rcp.getName()+" monthly");
+                    javaMailSender.send(simpleMailMessage);
+                    log.info("success send email monthly");
+                    report.setReportId("REP"+AutoIncrementHelper.increment(reportRepository.getLastId()));
+                    report.setDateSent(dateNow);
+                    report.setTimeSent(now);
+                    report.setEmail(rcp.getEmail());
+                    report.setSentBy(sender);
+                    report.setTemplateMessageId(templateMessage.getTemplateMessageId());
+                    report.setBodyMessage(templateMessage.getBodyMessage());
+                    reportRepository.save(report);
+                }
             }
         }
     }
@@ -134,24 +156,26 @@ public class MyScheduler {
     private HolidayRepository holidayRepository;
 
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 10000)
     public void index(){
         String urlTemplate = UriComponentsBuilder.fromHttpUrl("https://api-harilibur.vercel.app/api")
                 .queryParam("year","")
                 .queryParam("month","").encode().toUriString();
         HttpEntity<List<DataGrid>> listRole = restTemplate.exchange(urlTemplate, HttpMethod.GET, null, new ParameterizedTypeReference<List<DataGrid>>() {});
         List<DataGrid> dataGrids = listRole.getBody();
-        List<Holiday> holidayList = holidayRepository.findAll();
-        for (Holiday hol : holidayList){
             for(DataGrid dg:dataGrids){
-                if(hol.getHolidayDate()!=dg.getHolidayName()){
-                    holiday.setHolidayId("HOL"+AutoIncrementHelper.increment(holidayRepository.getLastId()));
-                    holiday.setHolidayName(dg.getHolidayName());
-                    holiday.setHolidayDate(dg.getHolidayDate());
-                    holiday.setNationalHoliday(dg.isNationalHoliday());
-                    holidayRepository.save(holiday);
-                    log.info("success save holiday");
-                }
+                Holiday hol = holidayRepository.holidahByName(dg.getHolidayDate());
+              if(hol!=null){
+                    hol.setHolidayName(dg.getHolidayName());
+                    hol.setHolidayDate(dg.getHolidayDate());
+                    hol.setNationalHoliday(dg.isNationalHoliday());
+                    holidayRepository.save(hol);
+                }else{
+                  holiday.setHolidayId("HOL"+AutoIncrementHelper.increment(holidayRepository.getLastId()));
+                  holiday.setHolidayDate(dg.getHolidayDate());
+                  holiday.setHolidayName(dg.getHolidayName());
+                  holiday.setNationalHoliday(dg.isNationalHoliday());
+                  holidayRepository.save(holiday);
             }
         }
     }

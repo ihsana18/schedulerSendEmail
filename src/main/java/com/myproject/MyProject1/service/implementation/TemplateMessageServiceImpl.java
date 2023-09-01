@@ -9,6 +9,7 @@ import com.myproject.MyProject1.repository.RecipientRepository;
 import com.myproject.MyProject1.repository.TemplateMessageRepository;
 import com.myproject.MyProject1.service.abstraction.TemplateMessageService;
 import com.myproject.MyProject1.utility.AutoIncrementHelper;
+import com.myproject.MyProject1.utility.FileHelper;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,6 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +39,25 @@ public class TemplateMessageServiceImpl implements TemplateMessageService {
     TemplateMessage templateMessage;
 
     @Override
-    public String save(InsertTemplateMessage dto) {
+    public String save(InsertTemplateMessage dto) throws IOException {
         TemplateMessage templateExisting = templateMessageRepository.findByName(dto.getCurrentTemplateName());
         if(templateExisting!=null){
             templateExisting.setTemplateName(dto.getTemplateName());
             templateExisting.setBodyMessage(dto.getBodyMessage());
+            templateExisting.setAttachmentType(dto.getAttachmentType());
+            String directory = FileHelper.uploadProductPhoto(dto.getFileAttachment(),dto.getAttachmentType());
+            templateExisting.setAttachmentDirectory(directory);
             templateMessageRepository.save(templateExisting);
         }else{
             templateMessage.setTemplateMessageId("TMP"+AutoIncrementHelper.increment(templateMessageRepository.getLastId()));
             templateMessage.setBodyMessage(dto.getBodyMessage());
             templateMessage.setTemplateName(dto.getTemplateName());
+            templateMessage.setAttachmentType(dto.getAttachmentType());
+            String directory = FileHelper.uploadProductPhoto(dto.getFileAttachment(),dto.getAttachmentType());
+            templateMessage.setAttachmentDirectory(directory);
             templateMessageRepository.save(templateMessage);
 
         }
-
         return "Success insert template message";
     }
 

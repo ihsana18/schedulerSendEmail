@@ -34,7 +34,7 @@ public interface TemplateMessageRepository extends JpaRepository<TemplateMessage
     @Query("SELECT tmp FROM TemplateMessage tmp WHERE tmp.templateName = :templateName")
     TemplateMessage findByName(String templateName);
 
-    @Query("SELECT new com.myproject.MyProject1.dto.InsertTemplateMessage(tmp.templateName,tmp.templateName,tmp.bodyMessage) FROM TemplateMessage tmp WHERE tmp.templateName = :currentTemplateName")
+    @Query("SELECT new com.myproject.MyProject1.dto.InsertTemplateMessage(tmp.templateName,tmp.templateName,tmp.bodyMessage,tmp.attachmentType) FROM TemplateMessage tmp WHERE tmp.templateName = :currentTemplateName")
     InsertTemplateMessage getTemplateByName(String currentTemplateName);
 
     @Query("SELECT new com.myproject.MyProject1.dto.DropdownDTO(tmp.templateName,tmp.templateName) FROM TemplateMessage tmp")

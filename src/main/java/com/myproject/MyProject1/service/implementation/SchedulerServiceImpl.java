@@ -1,9 +1,12 @@
 package com.myproject.MyProject1.service.implementation;
 
+import com.myproject.MyProject1.dto.HolidayGrid;
 import com.myproject.MyProject1.dto.InsertScheduler;
 import com.myproject.MyProject1.dto.SchedulerGrid;
+import com.myproject.MyProject1.entity.Holiday;
 import com.myproject.MyProject1.entity.Scheduler;
 import com.myproject.MyProject1.entity.TemplateMessage;
+import com.myproject.MyProject1.repository.HolidayRepository;
 import com.myproject.MyProject1.repository.SchedulerRepository;
 import com.myproject.MyProject1.repository.TemplateMessageRepository;
 import com.myproject.MyProject1.service.abstraction.SchedulerService;
@@ -12,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -23,6 +28,8 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Autowired
     private SchedulerRepository schedulerRepository;
 
+    @Autowired
+    private HolidayRepository holidayRepository;
     @Autowired
     private TemplateMessageRepository templateMessageRepository;
 
@@ -91,5 +98,14 @@ public class SchedulerServiceImpl implements SchedulerService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Page<HolidayGrid> getLIstHoliday(int page) {
+        Pageable pageable =PageRequest.of(page-1,10, Sort.by("holidayDate"));
+        LocalDate now = LocalDate.now();
+        String nowYear = String.valueOf(now.getYear());
+        Page<HolidayGrid> holidayGridPage = holidayRepository.getListHoliday(pageable,nowYear);
+        return holidayGridPage;
     }
 }

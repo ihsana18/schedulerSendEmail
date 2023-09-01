@@ -5,12 +5,14 @@
 	<nav th:replace="~{layout :: navigation}"></nav>
 	<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
 	<main>
+
 		<div class="grid-container category-index">
 		    <form method="get" class="filter" th:attr="action=@{/recipient/index}">
 		        <input type="text" name="search" placeholder="Search..." th:attr="value=${search}">
 		        <button class="blue-button" type="submit">Search</button>
 		    </form>
 		    <a class="blue-button create-button" th:href="@{/recipient/upsertForm}">Insert Recipient</a>
+			<input type="hidden" th:attr="value=${message}" id="message-save">
 			<table>
 		        <thead>
 		            <tr>

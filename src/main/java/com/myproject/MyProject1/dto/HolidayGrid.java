@@ -12,5 +12,5 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class HolidayGrid {
     private String holidayName;
-    private LocalDate holidayDate;
+    private String holidayDate;
 }

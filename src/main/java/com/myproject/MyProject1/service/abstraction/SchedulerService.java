@@ -1,5 +1,6 @@
 package com.myproject.MyProject1.service.abstraction;
 
+import com.myproject.MyProject1.dto.HolidayGrid;
 import com.myproject.MyProject1.dto.InsertScheduler;
 import com.myproject.MyProject1.dto.SchedulerGrid;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,6 @@ public interface SchedulerService {
     void delete(String schedulerName);
 
     boolean checkSchedlerName(String valueSchedulerName, String valueCurrentSchedName);
+
+    Page<HolidayGrid> getLIstHoliday(int page);
 }

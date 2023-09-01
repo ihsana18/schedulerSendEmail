@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body" th:data-role="${#authentication.getAuthorities()}">
+	<nav th:replace="~{layout :: navigation}"></nav>
+	<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+	<main>
+		<div class="grid-container category-index">
+			<table>
+		        <thead>
+		            <tr>
+						<th>Holiday Name</th>
+		                <th>Date </th>
+		            </tr>
+		        </thead>
+		        <tbody>
+			        <tr th:each="template : ${grid}" th:object="${template}">
+						<td th:text="*{holidayName}"></td>
+						<td th:text="*{holidayDate}"></td>
+							</tr>
+		        </tbody>
+				<tfoot>
+		            <tr>
+		                <td colspan="3">
+		                    <div class="pagination">
+		                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+		                        <div th:if="${totalPages != 0}">
+									<a th:each="loop:${#numbers.sequence(1,totalPages)}" 
+										th:href="@{/scheduler/holiday-index(page=${loop})}"
+										th:text="${loop}"></a>
+		                        </div>
+		                    </div>
+		                </td>
+		            </tr>
+		        </tfoot>
+			</table>
+		</div>
+	</main>
+	<footer th:replace="~{layout :: footer}"></footer>
+	<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

@@ -1,9 +1,6 @@
 package com.myproject.MyProject1.controller;
 
-import com.myproject.MyProject1.dto.Dropdown;
-import com.myproject.MyProject1.dto.DropdownDTO;
-import com.myproject.MyProject1.dto.InsertScheduler;
-import com.myproject.MyProject1.dto.SchedulerGrid;
+import com.myproject.MyProject1.dto.*;
 import com.myproject.MyProject1.entity.TemplateMessage;
 import com.myproject.MyProject1.service.abstraction.SchedulerService;
 import com.myproject.MyProject1.service.abstraction.TemplateMessageService;
@@ -91,5 +88,15 @@ public class SchedulerController {
     public String delete(@RequestParam(required = true)String schedulerName){
         service.delete(schedulerName);
         return "redirect:/scheduler/index";
+    }
+
+    @GetMapping("/holiday-index")
+    public String getListHoliday(@RequestParam(defaultValue = "1")int page,Model model){
+        Page<HolidayGrid> holidayGrids = service.getLIstHoliday(page);
+        model.addAttribute("grid",holidayGrids);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPages",holidayGrids.getTotalPages());
+        model.addAttribute("breadCrumbs","Scheduler Index");
+        return "scheduler/holiday-index";
     }
 }

@@ -113,5 +113,15 @@ public class RecipientServiceImpl implements RecipientService {
         recipientRepository.save(rcp);
     }
 
+    @Override
+    public String saveTest(InsertRecipient test) {
+        if(test.getName().equals("")||test.getName()==null){
+            throw new RuntimeException("Nama Wajib Di isi");
+        }else if(recipientRepository.getTemplateName(test.getName())!=null){
+            throw new RuntimeException("Nama Sudah Ada.. Mohon Ganti dengan nama Lain");
+        }
+        return "success save "+test.getName();
+    }
+
 
 }

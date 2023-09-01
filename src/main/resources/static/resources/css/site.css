@@ -240,7 +240,7 @@ html {
         border-radius: 4px;
         vertical-align: middle;
 }
-[type=text], select, [type=date], [type=tel], [type=email], [type=number], [type=datetime-local] {
+[type=text], select, [type=date], [type=tel], [type=email], [type=number], [type=datetime-local] ,[type=file]{
     border: none;
     outline: none;
     color: #9badd5;

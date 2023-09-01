@@ -6,10 +6,11 @@ import com.myproject.MyProject1.dto.TemplateMessageGrid;
 import com.myproject.MyProject1.entity.TemplateMessage;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface TemplateMessageService {
-    String save(InsertTemplateMessage dto);
+    String save(InsertTemplateMessage dto) throws IOException;
 
    Page<TemplateMessageGrid> getListTemplate(int page, String search);
 

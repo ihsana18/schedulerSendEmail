@@ -20,6 +20,15 @@ public class Dropdown {
         roles.add(new DropdownDTO("Data Entry", "Data Entry"));
         return roles;
     }
+
+    public static List<DropdownDTO> dropdownType(){
+        List<DropdownDTO> types = new LinkedList<>();
+        types.add(new DropdownDTO("Image", "Image"));
+        types.add(new DropdownDTO("Video", "Video"));
+        types.add(new DropdownDTO("Document", "Document"));
+        return types;
+    }
+
     public static List<DropdownDTO> getMonthly(){
         List<DropdownDTO> roles = new LinkedList<>();
         roles.add(new DropdownDTO("1", "1"));

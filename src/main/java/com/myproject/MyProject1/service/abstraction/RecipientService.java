@@ -24,4 +24,6 @@ public interface RecipientService {
     void assignTemplate(RecipientAssignTemplate dto);
 
     void detach(String name, String templateName);
+
+    String saveTest(InsertRecipient test);
 }

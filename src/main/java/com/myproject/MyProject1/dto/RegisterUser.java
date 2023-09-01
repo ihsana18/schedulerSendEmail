@@ -1,6 +1,7 @@
 package com.myproject.MyProject1.dto;
 
 import com.myproject.MyProject1.validation.anotation.Compare;
+import com.myproject.MyProject1.validation.anotation.EmailValidation;
 import com.myproject.MyProject1.validation.anotation.UniqueUsername;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class RegisterUser {
     private String passwordConfirmation;
     @NotNull(message = "email is required")
     @NotBlank(message = "email is required")
+    @EmailValidation(message = "Format email @gmail.com or @yahoo.com or @yahoo.co.id")
     private String email;
     @NotNull(message = "role is required")
     @NotBlank(message = "role is required")

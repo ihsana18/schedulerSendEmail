@@ -11,6 +11,7 @@ import com.myproject.MyProject1.exception.GlobalExceptionHandling;
 import com.myproject.MyProject1.repository.RecipientRepository;
 import com.myproject.MyProject1.service.abstraction.RecipientService;
 import com.myproject.MyProject1.service.abstraction.TemplateMessageService;
+import com.myproject.MyProject1.utility.MonthEnd;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,13 +40,15 @@ public class RecipientController {
     private TemplateMessageService templateMessageService;
 
     @GetMapping("/index")
-    public String listRecipient(@RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "")String search, Model model){
+    public String listRecipient(@RequestParam(defaultValue = "1")int page, @RequestParam(defaultValue = "")String search, Model model,@RequestParam(required = false)String message){
         Page<RecipientGrid> grid = service.findAll(page,search);
+        model.addAttribute("message",message);
         model.addAttribute("grid",grid);
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPages",grid.getTotalPages());
         model.addAttribute("search",search);
         model.addAttribute("breadCrumbs","Recipient Index");
+        MonthEnd.monthEnd();
         return "recipient/recipient-index";
     }
 
@@ -126,5 +129,29 @@ public class RecipientController {
         redirectAttributes.addAttribute("name",name);
         service.detach(name,templateName);
         return "redirect:/recipient/assign-template";
+    }
+
+    @GetMapping("testRA")
+    public String testRA(Model model){
+        List<DropdownDTO> templateDropdown = templateMessageService.getTemplates();
+        InsertRecipient insertRecipient = new InsertRecipient();
+        model.addAttribute("test",insertRecipient);
+        model.addAttribute("type","Insert");
+        model.addAttribute("templates",templateDropdown);
+        return "recipient/recipient-test";
+    }
+
+    @PostMapping("test")
+    public String test(@ModelAttribute("test")InsertRecipient test,RedirectAttributes ra,Model model) {
+        try {
+            String message = service.saveTest(test);
+//            ra.addFlashAttribute("message",message);
+            model.addAttribute("message",message);
+            ra.addAttribute("message",message);
+            return "redirect:/recipient/index";
+        } catch (RuntimeException e) {
+            ra.addFlashAttribute("message", e.getMessage());
+            return "redirect:/recipient/testRA";
+        }
     }
 }

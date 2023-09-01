@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -26,5 +27,16 @@ public class InsertTemplateMessage {
     @NotBlank(message = "bodyMessage cannot empty")
     private String bodyMessage;
 
+    private String attachmentType;
 
+    private MultipartFile fileAttachment;
+
+    private String attachmentPatch;
+
+    public InsertTemplateMessage(String currentTemplateName, String templateName, String bodyMessage, String attachmentType) {
+        this.currentTemplateName = currentTemplateName;
+        this.templateName = templateName;
+        this.bodyMessage = bodyMessage;
+        this.attachmentType = attachmentType;
+    }
 }
