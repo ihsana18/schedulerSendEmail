@@ -49,7 +49,6 @@ public class ReportController {
         // Membuat workbook Excel
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Report");
-
         // Membuat header kolom
         Row headerRow = sheet.createRow(0);
         headerRow.createCell(0).setCellValue("Report Id");
@@ -65,7 +64,6 @@ public class ReportController {
         log.info("reports size "+reports.size());
         for (Report data : reports) {
             if(data.getDateSent().getMonth().toString().toLowerCase().equals(dto.getMonth().toLowerCase())){
-                log.info("reports size "+reports.size());
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(data.getReportId());
                 row.createCell(1).setCellValue(data.getSentBy());
@@ -76,6 +74,10 @@ public class ReportController {
                 row.createCell(6).setCellValue(data.getTemplateMessage().getTemplateName());
             }
 
+
+        }
+        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+            sheet.autoSizeColumn(i);
         }
         model.addAttribute("report",reports);
 

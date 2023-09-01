@@ -8,49 +8,61 @@
 	<link rel="stylesheet" th:href="@{/resources/css/normalize.css}" />
 	<link rel="stylesheet" th:href="@{/resources/css/font-awesome.css}" />
 	<link rel="stylesheet" th:href="@{/resources/css/site.css}" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 	<script th:src="@{/resources/js/jquery-3.6.0.js}"></script>
 </head>
 <body>
-	<nav th:fragment="navigation">
-	    <div class="company-logo">
-	        <img th:src="@{/resources/image/logo.png}" alt="Scheduler" />
-	        <h1>
-	            My Project <span class="bold">Scheduler Sent Email</span>
-	        </h1>
-	    </div>
-	    <a class="menu category" th:href="@{/}">
-			<i class="fas fa-users"></i>
-	        <span>Account</span>
-	    </a>
-		<a class="menu category" th:href="@{/template/index}">
-			<i class="fas fa-envelope"></i>
-			<span>Template Message</span>
-		</a>
-		<a class="menu category" th:href="@{/scheduler/index}">
-			<i class="fas fa-clipboard-list"></i>
-			<span>Scheduler</span>
-		</a>
-		<a class="menu category" th:href="@{/recipient/index}">
-			<i class="fas fa-users"></i>
-			<span>Recipient</span>
-		</a>
-		<a class="menu category" th:href="@{/report/index}">
-			<i class="fas fa-file-invoice"></i>
-			<span>Report</span>
-		</a>
-		<a class="menu category" th:href="@{/scheduler/holiday-index}">
-			<i class="fas fa-file-invoice"></i>
-			<span>Holiday</span>
-		</a>
-		<a class="menu category" th:href="@{/recipient/testRA}">
-			<i class="fas fa-file-invoice"></i>
-			<span>Test Redirect Attribute</span>
-		</a>
-		<a class="menu order" th:href="@{/swagger-ui/index.html}">
-			<i class="fas fa-server"></i>
-			<span>API Doc</span>
-		</a>
+<div th:fragment="navigation" class="nav" id="navbar">
+	<nav  class="nav__container">
+		<div>
+			<div class="profile-image">
+				<img th:src="@{/resources/image/perfil.jpg}" alt="Scheduler" />
+			</div>
+			<a href="#" class="nav__link nav__logo">
+				<i  class='bx bxs-menu nav__icon'>
+				</i>
+				<span class="nav__logo-name">My Project <br> <span class="bold">Scheduler Sent Email</span>
+</span>
+			</a>
+			<div class="nav__list">
+				<div class="nav__items">
+					<a class="nav__link" th:href="@{/}">
+						<i class="fas fa-users nav__icon"></i>
+						<span class="nav__name">Account</span>
+					</a>
+					<a class="nav__link" th:href="@{/template/index}">
+						<i class="fas fa-envelope nav__icon"></i>
+						<span class="nav__name">Template Message</span>
+					</a>
+					<a class="nav__link" th:href="@{/scheduler/index}">
+						<i class="fas fa-clipboard-list nav__icon"></i>
+						<span class="nav__name">Scheduler</span>
+					</a>
+					<a class="nav__link" th:href="@{/recipient/index}">
+						<i class="fas fa-users nav__icon"></i>
+						<span class="nav__name">Recipient</span>
+					</a>
+					<a class="nav__link" th:href="@{/report/index}">
+						<i class="fas fa-file-invoice nav__icon"></i>
+						<span class="nav__name">Report</span>
+					</a>
+					<a class="nav__link" th:href="@{/scheduler/holiday-index}">
+						<i class="fas fa-file-invoice nav__icon"></i>
+						<span class="nav__name">Holiday</span>
+					</a>
+
+					<a class="nav__link" th:href="@{/swagger-ui/index.html}">
+						<i class="fas fa-server nav__icon"></i>
+						<span class="nav__name">API Doc</span>
+					</a>
+
+				</div>
+			</div>
+		</div>
 	</nav>
+</div>
+
+
     <header th:fragment="header (breadCrumbs)">
         <div class="bread-crumbs">
             <span th:text="${breadCrumbs}"></span>

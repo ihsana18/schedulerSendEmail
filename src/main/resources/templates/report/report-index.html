@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{layout :: head}"></head>
 <body class="main-body" th:data-role="${#authentication.getAuthorities()}">
-	<nav th:replace="~{layout :: navigation}"></nav>
+<div th:replace="~{layout :: navigation}"></div>
 	<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
 	<main>
 		<div class="grid-container category-index">
